@@ -1,5 +1,4 @@
 import "./loadEnvironment.js";
-
 import { debug } from "console";
 import { app } from "./server/index.js";
 import chalk from "chalk";
