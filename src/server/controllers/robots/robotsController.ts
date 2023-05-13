@@ -3,9 +3,9 @@ import { Robot } from "../../../database/models/robot.js";
 
 export const getRobots = async (_req: Request, res: Response) => {
   try {
-    const myRobots = await Robot.find();
+    const myRobots = await Robot.find().exec();
     res.status(200).json(myRobots);
-  } catch {
-    res.status(404).json({ message: "Robots not found" });
+  } catch (error: unknown) {
+    res.status(404).json((error as Error).message);
   }
 };
