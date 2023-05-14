@@ -1,13 +1,14 @@
 import createDebug from "debug";
-import { type Response, type NextFunction } from "express";
-import CustomError from "../CustomError";
+
+import CustomError from "../CustomError.js";
+import { type Request, type NextFunction, type Response } from "express";
 
 const debugErrorMiddlewares = createDebug(
   "robots-api:server:middlewares:errorMiddlewares"
 );
 
 export const notFoundError = (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -16,19 +17,17 @@ export const notFoundError = (
   next(error);
 };
 
-export const generalError = (
+export const generalErrorMiddleware = (
   error: CustomError,
   req: Request,
   res: Response,
   _next: NextFunction
 ) => {
-  debugErrorMiddlewares(error.message);
-
-  const statusCode = error.statusCode ?? 500;
-
-  const message = error.statusCode
-    ? error.message
-    : "Please, come back in five minutes";
+  debugErrorMiddlewares("GENERAL ERROR MIDDLEWARE ERROR");
+  const statusCode = error.statusCode || 500;
+  const message = error.statusCode ? error.message : "Total error";
 
   res.status(statusCode).json({ message });
 };
+
+export default generalErrorMiddleware;

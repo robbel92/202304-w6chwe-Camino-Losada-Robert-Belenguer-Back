@@ -5,6 +5,7 @@ import morgan from "morgan";
 import createDebug from "debug";
 import chalk from "chalk";
 import robotsRouter from "./middelwares/routers/robots/robotsRouter.js";
+import generalErrorMiddleware from "./middelwares/errorMiddlewares.js";
 
 export const debug = createDebug("robots-api:root");
 
@@ -28,3 +29,5 @@ try {
 }
 
 app.use("/robots", robotsRouter);
+
+app.use(generalErrorMiddleware);
