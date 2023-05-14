@@ -15,7 +15,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://202304-w6chwe-camino-losada-front.netlify.app",
+  "https://202304-w6chwe-camino-losada-robert-be.netlify.app",
 ];
 
 const options: cors.CorsOptions = {
