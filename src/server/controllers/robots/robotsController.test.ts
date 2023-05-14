@@ -1,4 +1,4 @@
-import { type Request, type Response } from "express";
+import { type NextFunction, type Request, type Response } from "express";
 import { getRobots } from "./robotsController.js";
 import { Robot } from "../../../database/models/robot.js";
 import robotsMdMock from "../../../mocks/robotsMock.js";
@@ -16,6 +16,7 @@ describe("Given a getRobots controller", () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
+    const next = jest.fn().mockReturnThis();
     test("Then it should call the response's method status with 200", async () => {
       const expectedStatusCode = 200;
 
@@ -23,7 +24,7 @@ describe("Given a getRobots controller", () => {
         exec: jest.fn().mockResolvedValue(robotsMdMock),
       });
 
-      await getRobots(req as Request, res as Response);
+      await getRobots(req as Request, res as Response, next as NextFunction);
 
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
@@ -33,21 +34,19 @@ describe("Given a getRobots controller", () => {
         exec: jest.fn().mockResolvedValue(robotsMdMock),
       });
 
-      await getRobots(req as Request, res as Response);
+      await getRobots(req as Request, res as Response, next as NextFunction);
 
       expect(res.json).toHaveBeenCalledWith(robotsMdMock);
     });
 
-    test("Then it should call the response's method status with 404", async () => {
-      const expectedStatusCode = 404;
-
+    test("Then it should call the the function next", async () => {
       Robot.find = jest.fn().mockReturnValue({
         exec: jest.fn().mockRejectedValue(robotsMdMock),
       });
 
-      await getRobots(req as Request, res as Response);
+      await getRobots(req as Request, res as Response, next as NextFunction);
 
-      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
+      expect(next).toHaveBeenCalled();
     });
   });
 });

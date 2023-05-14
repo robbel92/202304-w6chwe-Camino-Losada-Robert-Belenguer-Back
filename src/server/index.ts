@@ -4,7 +4,7 @@ import express from "express";
 import morgan from "morgan";
 import createDebug from "debug";
 import chalk from "chalk";
-import { getRobots } from "./controllers/robots/robotsController.js";
+import robotsRouter from "./middelwares/routers/robots/robotsRouter.js";
 
 export const debug = createDebug("robots-api:root");
 
@@ -27,4 +27,4 @@ try {
   debug(`Error connecting database ${(error as Error).message}`);
 }
 
-app.get("/robots", getRobots);
+app.use("/robots", robotsRouter);
