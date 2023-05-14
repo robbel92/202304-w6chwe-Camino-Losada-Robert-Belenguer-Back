@@ -34,9 +34,11 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@types/cors": "^2.8.13",
     "@types/jest": "^29.5.1",
     "@types/mongoose": "^5.11.97",
     "chalk": "^5.2.0",
+    "cors": "^2.8.5",
     "debug": "^4.3.4",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
