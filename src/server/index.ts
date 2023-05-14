@@ -6,6 +6,7 @@ import createDebug from "debug";
 import chalk from "chalk";
 import robotsRouter from "./middelwares/routers/robots/robotsRouter.js";
 import generalErrorMiddleware from "./middelwares/errorMiddlewares.js";
+import { clients } from "../index.js";
 
 export const debug = createDebug("robots-api:root");
 
@@ -14,7 +15,7 @@ export const app = express();
 app.disable("x-powered-by");
 
 app.use((req: Request, res: Response) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/");
+  res.setHeader("Access-Control-Allow-Origin", clients);
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 });
