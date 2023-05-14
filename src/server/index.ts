@@ -1,26 +1,29 @@
 import "../loadEnvironment.js";
 import mongoose from "mongoose";
-import express, { type Request, type Response } from "express";
+import express from "express";
 import morgan from "morgan";
 import createDebug from "debug";
 import chalk from "chalk";
 import robotsRouter from "./middelwares/routers/robots/robotsRouter.js";
 import generalErrorMiddleware from "./middelwares/errorMiddlewares.js";
-
+import cors from "cors";
 export const debug = createDebug("robots-api:root");
 
 export const app = express();
 
-app.disable("x-powered-by");
+app.use(express.json());
 
-app.use((req: Request, res: Response) => {
-  res.setHeader("Access-Control-Allow-Origin", [
-    "http://localhost:5173/",
-    "https://202304-w6chwe-camino-losada-front.netlify.app/",
-  ]);
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-});
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://202304-w6chwe-camino-losada-front.netlify.app/",
+];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+};
+app.use(cors(options));
+
+app.disable("x-powered-by");
 
 app.use(morgan("combined"));
 
