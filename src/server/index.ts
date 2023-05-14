@@ -1,17 +1,13 @@
 import "../loadEnvironment.js";
-import mongoose from "mongoose";
 import express from "express";
 import morgan from "morgan";
 import createDebug from "debug";
-import chalk from "chalk";
 import robotsRouter from "./middelwares/routers/robots/robotsRouter.js";
-import generalErrorMiddleware from "./middelwares/errorMiddlewares.js";
+import generalErrorMiddleware, {
+  notFoundError,
+} from "./middelwares/errorMiddlewares.js";
 import cors from "cors";
 export const debug = createDebug("robots-api:root");
-
-export const app = express();
-
-app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -21,25 +17,17 @@ const allowedOrigins = [
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
+export const app = express();
+
 app.use(cors(options));
+
+app.use(express.json());
 
 app.disable("x-powered-by");
 
-app.use(morgan("combined"));
-
-const mongoDbConnection = process.env.MONGODB_CONNECTION;
-
-if (!mongoDbConnection) {
-  debug(chalk.red("Missing environment variables. Exiting..."));
-  process.exit(1);
-}
-
-try {
-  await mongoose.connect(mongoDbConnection);
-} catch (error: unknown) {
-  debug(`Error connecting database ${(error as Error).message}`);
-}
+app.use(morgan("dev"));
 
 app.use("/robots", robotsRouter);
+app.use(notFoundError);
 
 app.use(generalErrorMiddleware);
