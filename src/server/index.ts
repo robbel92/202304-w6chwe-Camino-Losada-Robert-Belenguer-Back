@@ -1,6 +1,6 @@
 import "../loadEnvironment.js";
 import mongoose from "mongoose";
-import express from "express";
+import express, { type Request, type Response } from "express";
 import morgan from "morgan";
 import createDebug from "debug";
 import chalk from "chalk";
@@ -12,6 +12,12 @@ export const debug = createDebug("robots-api:root");
 export const app = express();
 
 app.disable("x-powered-by");
+
+app.use((req: Request, res: Response) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+});
 
 app.use(morgan("combined"));
 

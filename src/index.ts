@@ -3,7 +3,7 @@ import { debug } from "console";
 import { app } from "./server/index.js";
 import chalk from "chalk";
 
-export const port = 4000;
+export const port = process.env.PORT ?? 5000;
 
 app.listen(port, () => {
   debug(chalk.blue(`Listening in port ${port}`));
